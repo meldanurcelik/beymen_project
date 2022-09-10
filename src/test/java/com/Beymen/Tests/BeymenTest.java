@@ -38,6 +38,9 @@ public class BeymenTest extends BaseTest {
         //Seçilen ürün sepete eklenir.
         basePage.addToBasket();
 
+        //Ürün sayfasındaki fiyat ile sepette yer alan ürün fiyatının doğruluğu karşılaştırılır.
+        basePage.checkPriceInBasket();
+
     }
 
 }

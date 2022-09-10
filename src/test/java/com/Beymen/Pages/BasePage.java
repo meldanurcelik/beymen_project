@@ -19,31 +19,39 @@ public class BasePage {
     WebDriverWait wait;
     ElementHelper elementHelper;
 
+    String detailPrice;
+
     public BasePage() {
         this.driver = BaseTest.driver;
         this.wait = new WebDriverWait(driver, 10);
         this.elementHelper = new ElementHelper(driver);
     }
 
-    By onetrustAcceptBtn = By.xpath("//button[@id='onetrust-accept-btn-handler']");
+    By onetrustAcceptBtn = By.xpath("//*[@id='onetrust-accept-btn-handler']");
 
-    By headerLogo = By.xpath("//a[@class='o-header__logo']");
+    By headerLogo = By.xpath("//*[@class='o-header__logo']");
 
-    By searchInput = By.xpath("//input[contains(@class,'default-input o-header__search--input')]");
+    By searchInput = By.xpath("//*[contains(@class,'default-input o-header__search--input')]");
 
-    By productList = By.xpath("//div[contains(@class, 'o-productList__itemWrapper')]");
+    By productList = By.xpath("//*[contains(@class, 'o-productList__itemWrapper')]");
 
-    By productDescription = By.xpath("//span[@class='o-productDetail__description']");
+    By productDescription = By.xpath("//*[@class='o-productDetail__description']");
 
-    By productColor = By.xpath("//label[@class='m-form__label m-variation__label']");
+    By productColor = By.xpath("//*[@class='m-colorsSlider__top']//label");
 
-    By productPrice = By.xpath("//ins[@id='priceNew']");
+    By productPrice = By.xpath("//*[@id='priceNew']");
 
-    By productSizes = By.xpath("//span[contains(@class, 'm-variation__item')]");
+    By productSizes = By.xpath("//*[contains(@class, 'm-variation__item')]");
 
-    By addBasketBtn = By.xpath("//button[@id='addBasket']");
+    By addBasketBtn = By.xpath("//*[@id='addBasket']");
 
-    By notificationTitle = By.xpath("//h4[@class='m-notification__title']");
+    By notificationTitle = By.xpath("//*[@class='m-notification__title']");
+
+    By notificationBtn = By.xpath("//*[@class='m-notification__button btn']");
+
+    By orderSummaryTitle = By.xpath("//*[@class='m-orderSummary__title']");
+
+    By productSalePrice = By.xpath("//*[@class='m-productPrice__salePrice']");
 
 
     public void openPage() {
@@ -93,6 +101,7 @@ public class BasePage {
     }
 
     public void addToBasket() {
+        detailPrice = elementHelper.getText(productPrice);
         int bodySizeCount = elementHelper.findElements(productSizes).size();
         while (true){
             Random random = new Random();
@@ -108,6 +117,13 @@ public class BasePage {
         String actualText = elementHelper.getText(notificationTitle);
         String expectedText = "Sepete Eklendi";
         Assert.assertEquals(expectedText, actualText);
+    }
+
+    public void checkPriceInBasket() {
+        elementHelper.click(notificationBtn);
+        elementHelper.checkElementVisible(orderSummaryTitle);
+        String salePrice = elementHelper.getText(productSalePrice);
+        Assert.assertEquals(detailPrice, salePrice);
     }
 
 }
