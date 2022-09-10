@@ -32,6 +32,9 @@ public class BeymenTest extends BaseTest {
         //Sonuca göre sergilenen ürünlerden rastgele bir ürün seçilir.
         basePage.getRandomProduct();
 
+        //Seçilen ürünün ürün bilgisi ve tutar bilgisi txt dosyasına yazılır.
+        basePage.writeProductInformation();
+
     }
 
 }

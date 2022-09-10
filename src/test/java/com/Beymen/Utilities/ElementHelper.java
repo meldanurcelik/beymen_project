@@ -12,9 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 public class ElementHelper {
@@ -101,6 +99,19 @@ public class ElementHelper {
         Row row = sheet.getRow(0);
         Cell cell = row.getCell(column);
         return cell.toString();
+    }
+
+    public void writeToTxt(By descriptionKey, By colorKey, By priceKey)  {
+        try {
+            FileWriter fileWriter = new FileWriter("./Reports/productInfos.txt");
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.println("Ürün Açıklaması : " + getText(descriptionKey));
+            printWriter.println("Ürün Rengi : " + getText(colorKey));
+            printWriter.println("Ürün Fiyatı : " + getText(priceKey));
+            printWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -35,6 +35,10 @@ public class BasePage {
 
     By productDetailDescription = By.xpath("//span[@class='o-productDetail__description']");
 
+    By productDetailColor = By.xpath("//label[@class='m-form__label m-variation__label']");
+
+    By productDetailPrice = By.xpath("//ins[@id='priceNew']");
+
 
     public void openPage() {
         DriverManager.initializeDriver();
@@ -76,6 +80,10 @@ public class BasePage {
         elementHelper.scrollToElement(product);
         product.click();
         elementHelper.checkElementVisible(productDetailDescription);
+    }
+
+    public void writeProductInformation(){
+        elementHelper.writeToTxt(productDetailDescription, productDetailColor, productDetailPrice);
     }
 
 }
