@@ -11,7 +11,11 @@ public class BeymenTest extends BaseTest {
 
         //www.beymen.com sitesi açılır.
         basePage.openPage();
-    }
 
+        //Ana sayfanın açıldığı kontrol edilir.
+        basePage.checkPage();
+
+
+    }
 
 }

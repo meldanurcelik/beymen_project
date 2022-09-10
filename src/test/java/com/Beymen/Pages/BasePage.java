@@ -3,6 +3,7 @@ package com.Beymen.Pages;
 import com.Beymen.Tests.BaseTest;
 import com.Beymen.Utilities.DriverManager;
 import com.Beymen.Utilities.ElementHelper;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -21,11 +22,20 @@ public class BasePage {
 
     By onetrustAcceptBtn = By.xpath("//button[@id='onetrust-accept-btn-handler']");
 
+    By headerLogo = By.xpath("//a[@class='o-header__logo']");
+
     public void openPage() {
         DriverManager.initializeDriver();
 
         elementHelper.checkElementClickable(onetrustAcceptBtn);
         elementHelper.click(onetrustAcceptBtn);
+    }
+
+    public void checkPage() {
+        elementHelper.checkElementVisible(headerLogo);
+        String actualTitle = elementHelper.getAttribute(headerLogo, "title");
+        String expectedTitle = "Beymen";
+        Assert.assertEquals(expectedTitle, actualTitle);
     }
 
 }
