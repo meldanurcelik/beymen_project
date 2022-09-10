@@ -43,18 +43,18 @@ public class BasePage {
         Assert.assertEquals(expectedTitle, actualTitle);
     }
 
-    public void searchInInput() throws IOException {
-        elementHelper.sendKey(searchInput, elementHelper.readFromExcel(0));
-        String actualTitle = elementHelper.getAttribute(searchInput, "value");
-        String expectedTitle = "şort";
-        Assert.assertEquals(expectedTitle, actualTitle);
+    public void searchInInput(int column, String text) throws IOException {
+        elementHelper.sendKey(searchInput, elementHelper.readFromExcel(column));
+        String actualText = elementHelper.getAttribute(searchInput, "value");
+        String expectedText = text;
+        Assert.assertEquals(expectedText, actualText);
     }
 
     public void clearSearch() {
         elementHelper.sendKey(searchInput, Keys.CONTROL + "A" + Keys.DELETE);
-        String actualTitle = elementHelper.getAttribute(searchInput, "value");
-        String expectedTitle = "";
-        Assert.assertEquals(expectedTitle, actualTitle);
+        String actualText = elementHelper.getAttribute(searchInput, "value");
+        String expectedText = "";
+        Assert.assertEquals(expectedText, actualText);
     }
 
 }

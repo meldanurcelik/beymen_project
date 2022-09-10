@@ -8,7 +8,7 @@ import java.io.IOException;
 public class BeymenTest extends BaseTest {
 
     @Test
-    public void beymenTest() throws IOException, InterruptedException {
+    public void beymenTest() throws IOException {
         BasePage basePage = new BasePage();
 
         //www.beymen.com sitesi açılır.
@@ -18,10 +18,13 @@ public class BeymenTest extends BaseTest {
         basePage.checkPage();
 
         //Arama kutucuğuna “şort” kelimesi girilir.
-        basePage.searchInInput();
+        basePage.searchInInput(0, "şort");
 
         //Arama kutucuğuna girilen “şort” kelimesi silinir.
         basePage.clearSearch();
+
+        //Arama kutucuğuna “gömlek” kelimesi girilir.
+        basePage.searchInInput(1, "gömlek");
 
     }
 
