@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.IOException;
+
 public class BasePage {
 
     WebDriver driver;
@@ -24,6 +26,8 @@ public class BasePage {
 
     By headerLogo = By.xpath("//a[@class='o-header__logo']");
 
+    By searchInput = By.xpath("//input[@class='default-input o-header__search--input']");
+
     public void openPage() {
         DriverManager.initializeDriver();
 
@@ -36,6 +40,10 @@ public class BasePage {
         String actualTitle = elementHelper.getAttribute(headerLogo, "title");
         String expectedTitle = "Beymen";
         Assert.assertEquals(expectedTitle, actualTitle);
+    }
+
+    public void searchInInput() throws IOException {
+        elementHelper.sendKey(searchInput, elementHelper.readFromExcel(0));
     }
 
 }
