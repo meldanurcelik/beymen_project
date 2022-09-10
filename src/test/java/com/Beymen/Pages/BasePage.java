@@ -57,4 +57,8 @@ public class BasePage {
         Assert.assertEquals(expectedText, actualText);
     }
 
+    public void pressEnter() {
+        elementHelper.sendKey(searchInput, "" + Keys.ENTER);
+    }
+
 }

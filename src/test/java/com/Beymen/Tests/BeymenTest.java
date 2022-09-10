@@ -26,6 +26,9 @@ public class BeymenTest extends BaseTest {
         //Arama kutucuğuna “gömlek” kelimesi girilir.
         basePage.searchInInput(1, "gömlek");
 
+        //Klavye üzerinden “enter” tuşuna bastırılır.
+        basePage.pressEnter();
+
     }
 
 }
