@@ -44,6 +44,9 @@ public class BeymenTest extends BaseTest {
         //Adet arttırılarak ürün adedinin 2 olduğu doğrulanır.
         basePage.increaseQuantity("2");
 
+        //Ürün sepetten silinerek sepetin boş olduğu kontrol edilir.
+        basePage.deleteFromBasket();
+
     }
 
 }

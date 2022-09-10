@@ -47,15 +47,21 @@ public class BasePage {
 
     By addBasketBtn = By.xpath("//*[@id='addBasket']");
 
-    By notificationTitle = By.xpath("//*[@class='m-notification__title']");
+    By addedToCartNotifTitle = By.xpath("//*[@class='m-notification__title']");
 
-    By notificationBtn = By.xpath("//*[@class='m-notification__button btn']");
+    By addedToCartNotifBtn = By.xpath("//*[@class='m-notification__button btn']");
 
     By orderSummaryTitle = By.xpath("//*[@class='m-orderSummary__title']");
 
     By productSalePrice = By.xpath("//*[@class='m-productPrice__salePrice']");
 
     By quantityDropdown = By.xpath("//*[@id='quantitySelect0-key-0']");
+
+    By removeCartItemBtn = By.xpath("//*[@id='removeCartItemBtn0-key-0']");
+
+    By removeCartNotifTitlle = By.xpath("//*[@id='notifyTitle']");
+
+    By emptyMessageBtn = By.xpath("//*[@class='m-empty__messageBtn']");
 
 
     public void openPage() {
@@ -117,14 +123,14 @@ public class BasePage {
             }
         }
         elementHelper.click(addBasketBtn);
-        elementHelper.checkElementVisible(notificationTitle);
-        String actualText = elementHelper.getText(notificationTitle);
+        elementHelper.checkElementVisible(addedToCartNotifTitle);
+        String actualText = elementHelper.getText(addedToCartNotifTitle);
         String expectedText = "Sepete Eklendi";
         Assert.assertEquals(expectedText, actualText);
     }
 
     public void checkPriceInBasket() {
-        elementHelper.click(notificationBtn);
+        elementHelper.click(addedToCartNotifBtn);
         elementHelper.checkElementVisible(orderSummaryTitle);
         String salePrice = elementHelper.getText(productSalePrice);
         Assert.assertEquals(detailPrice, salePrice);
@@ -135,13 +141,22 @@ public class BasePage {
         List<WebElement> options = select.getOptions();
         int optionSize = options.size();
         for (int i = 0; i < optionSize; i++) {
-            if(options.get(i).getText().contains(quantity)) {
+            if (options.get(i).getText().contains(quantity)) {
                 select.selectByValue(quantity);
                 break;
             }
         }
         String actualQuantity = select.getFirstSelectedOption().getText();
         Assert.assertEquals(quantity + " adet", actualQuantity);
+    }
+
+    public void deleteFromBasket() {
+        elementHelper.click(removeCartItemBtn);
+        elementHelper.checkElementVisible(removeCartNotifTitlle);
+        elementHelper.checkElementVisible(emptyMessageBtn);
+        String actualTitle= elementHelper.getAttribute(emptyMessageBtn, "title");
+        String expectedTitle = "Alışverişe Devam Et";
+        Assert.assertEquals(expectedTitle, actualTitle);
     }
 
 }
