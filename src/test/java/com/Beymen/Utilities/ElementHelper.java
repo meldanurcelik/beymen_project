@@ -49,6 +49,10 @@ public class ElementHelper {
         findElement(key).sendKeys(text);
     }
 
+    public void clear(By key) {
+        findElement(key).clear();
+    }
+
     public String getText(By key) {
         return findElement(key).getText();
     }

@@ -5,6 +5,7 @@ import com.Beymen.Utilities.DriverManager;
 import com.Beymen.Utilities.ElementHelper;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -44,6 +45,16 @@ public class BasePage {
 
     public void searchInInput() throws IOException {
         elementHelper.sendKey(searchInput, elementHelper.readFromExcel(0));
+        String actualTitle = elementHelper.getAttribute(searchInput, "value");
+        String expectedTitle = "şort";
+        Assert.assertEquals(expectedTitle, actualTitle);
+    }
+
+    public void clearSearch() {
+        elementHelper.sendKey(searchInput, Keys.CONTROL + "A" + Keys.DELETE);
+        String actualTitle = elementHelper.getAttribute(searchInput, "value");
+        String expectedTitle = "";
+        Assert.assertEquals(expectedTitle, actualTitle);
     }
 
 }
