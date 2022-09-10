@@ -8,9 +8,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 public class BasePage {
@@ -52,6 +54,8 @@ public class BasePage {
     By orderSummaryTitle = By.xpath("//*[@class='m-orderSummary__title']");
 
     By productSalePrice = By.xpath("//*[@class='m-productPrice__salePrice']");
+
+    By quantityDropdown = By.xpath("//*[@id='quantitySelect0-key-0']");
 
 
     public void openPage() {
@@ -103,7 +107,7 @@ public class BasePage {
     public void addToBasket() {
         detailPrice = elementHelper.getText(productPrice);
         int bodySizeCount = elementHelper.findElements(productSizes).size();
-        while (true){
+        while (true) {
             Random random = new Random();
             int count = random.nextInt(bodySizeCount);
             WebElement selectedBody = elementHelper.findElements(productSizes).get(count);
@@ -124,6 +128,20 @@ public class BasePage {
         elementHelper.checkElementVisible(orderSummaryTitle);
         String salePrice = elementHelper.getText(productSalePrice);
         Assert.assertEquals(detailPrice, salePrice);
+    }
+
+    public void increaseQuantity(String quantity) {
+        Select select = new Select(elementHelper.findElement(quantityDropdown));
+        List<WebElement> options = select.getOptions();
+        int optionSize = options.size();
+        for (int i = 0; i < optionSize; i++) {
+            if(options.get(i).getText().contains(quantity)) {
+                select.selectByValue(quantity);
+                break;
+            }
+        }
+        String actualQuantity = select.getFirstSelectedOption().getText();
+        Assert.assertEquals(quantity + " adet", actualQuantity);
     }
 
 }

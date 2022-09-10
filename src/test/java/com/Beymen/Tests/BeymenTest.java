@@ -41,6 +41,9 @@ public class BeymenTest extends BaseTest {
         //Ürün sayfasındaki fiyat ile sepette yer alan ürün fiyatının doğruluğu karşılaştırılır.
         basePage.checkPriceInBasket();
 
+        //Adet arttırılarak ürün adedinin 2 olduğu doğrulanır.
+        basePage.increaseQuantity("2");
+
     }
 
 }
