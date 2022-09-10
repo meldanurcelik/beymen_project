@@ -33,11 +33,17 @@ public class BasePage {
 
     By productList = By.xpath("//div[contains(@class, 'o-productList__itemWrapper')]");
 
-    By productDetailDescription = By.xpath("//span[@class='o-productDetail__description']");
+    By productDescription = By.xpath("//span[@class='o-productDetail__description']");
 
-    By productDetailColor = By.xpath("//label[@class='m-form__label m-variation__label']");
+    By productColor = By.xpath("//label[@class='m-form__label m-variation__label']");
 
-    By productDetailPrice = By.xpath("//ins[@id='priceNew']");
+    By productPrice = By.xpath("//ins[@id='priceNew']");
+
+    By productSizes = By.xpath("//span[contains(@class, 'm-variation__item')]");
+
+    By addBasketBtn = By.xpath("//button[@id='addBasket']");
+
+    By notificationTitle = By.xpath("//h4[@class='m-notification__title']");
 
 
     public void openPage() {
@@ -79,11 +85,29 @@ public class BasePage {
         WebElement product = elementHelper.findElements(productList).get(count);
         elementHelper.scrollToElement(product);
         product.click();
-        elementHelper.checkElementVisible(productDetailDescription);
+        elementHelper.checkElementVisible(productDescription);
     }
 
-    public void writeProductInformation(){
-        elementHelper.writeToTxt(productDetailDescription, productDetailColor, productDetailPrice);
+    public void writeProductInformation() {
+        elementHelper.writeToTxt(productDescription, productColor, productPrice);
+    }
+
+    public void addToBasket() {
+        int bodySizeCount = elementHelper.findElements(productSizes).size();
+        while (true){
+            Random random = new Random();
+            int count = random.nextInt(bodySizeCount);
+            WebElement selectedBody = elementHelper.findElements(productSizes).get(count);
+            if (!selectedBody.getAttribute("class").contains("-disabled")) {
+                selectedBody.click();
+                break;
+            }
+        }
+        elementHelper.click(addBasketBtn);
+        elementHelper.checkElementVisible(notificationTitle);
+        String actualText = elementHelper.getText(notificationTitle);
+        String expectedText = "Sepete Eklendi";
+        Assert.assertEquals(expectedText, actualText);
     }
 
 }

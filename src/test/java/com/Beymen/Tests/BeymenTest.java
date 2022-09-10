@@ -35,6 +35,9 @@ public class BeymenTest extends BaseTest {
         //Seçilen ürünün ürün bilgisi ve tutar bilgisi txt dosyasına yazılır.
         basePage.writeProductInformation();
 
+        //Seçilen ürün sepete eklenir.
+        basePage.addToBasket();
+
     }
 
 }
