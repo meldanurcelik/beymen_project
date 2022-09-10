@@ -7,9 +7,11 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class BasePage {
 
@@ -27,11 +29,17 @@ public class BasePage {
 
     By headerLogo = By.xpath("//a[@class='o-header__logo']");
 
-    By searchInput = By.xpath("//input[@class='default-input o-header__search--input']");
+    By searchInput = By.xpath("//input[contains(@class,'default-input o-header__search--input')]");
+
+    By productList = By.xpath("//div[contains(@class, 'o-productList__itemWrapper')]");
+
+    By productDetailDescription = By.xpath("//span[@class='o-productDetail__description']");
+
 
     public void openPage() {
         DriverManager.initializeDriver();
 
+        elementHelper.checkElementVisible(onetrustAcceptBtn);
         elementHelper.checkElementClickable(onetrustAcceptBtn);
         elementHelper.click(onetrustAcceptBtn);
     }
@@ -43,10 +51,9 @@ public class BasePage {
         Assert.assertEquals(expectedTitle, actualTitle);
     }
 
-    public void searchInInput(int column, String text) throws IOException {
+    public void searchInInput(int column, String expectedText) throws IOException {
         elementHelper.sendKey(searchInput, elementHelper.readFromExcel(column));
         String actualText = elementHelper.getAttribute(searchInput, "value");
-        String expectedText = text;
         Assert.assertEquals(expectedText, actualText);
     }
 
@@ -59,6 +66,16 @@ public class BasePage {
 
     public void pressEnter() {
         elementHelper.sendKey(searchInput, "" + Keys.ENTER);
+    }
+
+    public void getRandomProduct() {
+        Random random = new Random();
+        int productSize = elementHelper.findElements(productList).size();
+        int count = random.nextInt(productSize);
+        WebElement product = elementHelper.findElements(productList).get(count);
+        elementHelper.scrollToElement(product);
+        product.click();
+        elementHelper.checkElementVisible(productDetailDescription);
     }
 
 }

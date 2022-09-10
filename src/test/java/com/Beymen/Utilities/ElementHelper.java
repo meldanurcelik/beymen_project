@@ -37,7 +37,7 @@ public class ElementHelper {
 
     public List<WebElement> findElements(By key) {
         List<WebElement> elements = presenceElements(key);
-        scrollToElement(elements.get(0));
+        //scrollToElement(elements.get(0));
         return elements;
     }
 

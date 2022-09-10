@@ -29,6 +29,9 @@ public class BeymenTest extends BaseTest {
         //Klavye üzerinden “enter” tuşuna bastırılır.
         basePage.pressEnter();
 
+        //Sonuca göre sergilenen ürünlerden rastgele bir ürün seçilir.
+        basePage.getRandomProduct();
+
     }
 
 }
