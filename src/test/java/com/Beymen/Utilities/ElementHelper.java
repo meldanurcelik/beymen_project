@@ -1,30 +1,35 @@
 package com.Beymen.Utilities;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import com.Beymen.Tests.BaseTest;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.Beymen.Tests.BaseTest.log4j;
+
 public class ElementHelper {
 
     WebDriver driver;
     WebDriverWait wait;
     Actions action;
+    ExtentTest logger;
 
     public ElementHelper(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, 10);
         this.action = new Actions(driver);
+        this.logger = BaseTest.logger;
     }
 
     public WebElement findElement(By key) {
@@ -47,16 +52,8 @@ public class ElementHelper {
         findElement(key).sendKeys(text);
     }
 
-    public void clear(By key) {
-        findElement(key).clear();
-    }
-
     public String getText(By key) {
         return findElement(key).getText();
-    }
-
-    public boolean checkElementText(By key, String text) {
-        return wait.until(ExpectedConditions.textToBe(key, text));
     }
 
     public void checkElementVisible(By key) {
@@ -65,10 +62,6 @@ public class ElementHelper {
 
     public void checkElementClickable(By key) {
         wait.until(ExpectedConditions.elementToBeClickable(findElement(key)));
-    }
-
-    public boolean checkTitle(String text) {
-        return wait.until(ExpectedConditions.titleIs(text));
     }
 
     public String getAttribute(By key, String attr) {
@@ -90,20 +83,10 @@ public class ElementHelper {
         ((JavascriptExecutor) driver).executeScript(scrollElementIntoMiddle, element);
     }
 
-    public String readFromExcel(int column) throws IOException {
-        String fileName = "beymen";
-        File filePath = new File("./src/test/resources/" + fileName + ".xlsx");
-        FileInputStream fs = new FileInputStream(filePath);
-        XSSFWorkbook workbook = new XSSFWorkbook(fs);
-        XSSFSheet sheet = workbook.getSheetAt(0);
-        Row row = sheet.getRow(0);
-        Cell cell = row.getCell(column);
-        return cell.toString();
-    }
-
-    public void writeToTxt(By descriptionKey, By colorKey, By priceKey)  {
+    public void writeToTxt(By descriptionKey, By colorKey, By priceKey) {
         try {
-            FileWriter fileWriter = new FileWriter("./Reports/productInfos.txt");
+            String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+            FileWriter fileWriter = new FileWriter("./Reports/productInfos-" + dateName + ".txt");
             PrintWriter printWriter = new PrintWriter(fileWriter);
             printWriter.println("Ürün Açıklaması : " + getText(descriptionKey));
             printWriter.println("Ürün Rengi : " + getText(colorKey));
@@ -114,14 +97,18 @@ public class ElementHelper {
         }
     }
 
-    public static String getScreenShot(WebDriver driver) throws IOException {
-        String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
-        TakesScreenshot ts = (TakesScreenshot) driver;
-        File source = ts.getScreenshotAs(OutputType.FILE);
-        String destination = System.getProperty("user.dir") + "/Screenshots/testResult-" + dateName + ".png";
-        File finalDestination = new File(destination);
-        FileUtils.copyFile(source, finalDestination);
-        return destination;
+    public void testCaseFailed() throws IOException {
+        String screenshotPath = Screenshoot.takeScreenshot(driver);
+        logger.log(Status.FAIL, MarkupHelper.createLabel("Test Case Step FAILED", ExtentColor.RED));
+        logger.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(screenshotPath).build());
+        log4j.info("Test Case Step FAILED");
     }
+
+    public void testCasePassed() {
+        logger.log(Status.PASS, MarkupHelper.createLabel("Test Case Step PASSED", ExtentColor.GREEN));
+        log4j.info("Test Case Step PASSED");
+    }
+
+
 
 }

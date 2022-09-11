@@ -5,6 +5,7 @@ import com.Beymen.Utilities.DriverManager;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import org.apache.log4j.Logger;
 import org.junit.*;
 import org.openqa.selenium.WebDriver;
 
@@ -18,14 +19,16 @@ public class BaseTest {
     public static ExtentTest logger;
     ExtentSparkReporter spark;
 
+    public final static Logger log4j = Logger.getLogger(BeymenTest.class);
+
     @Before
     public void before() {
+        log4j.info("Test started.");
         properties = ConfigurationReader.initializeProperties();
         driver = DriverManager.initializeDriver();
-
         report = new ExtentReports();
         String projectPath = System.getProperty("user.dir");
-        String path = projectPath + "/test-output/STMExtentReport.html";
+        String path = projectPath + "/test-output/ExtentReport.html";
         spark = new ExtentSparkReporter(path);
         report.attachReporter(spark);
         report.setSystemInfo("Environment", "Test");
@@ -40,6 +43,7 @@ public class BaseTest {
     public void after() {
         DriverManager.terminateDriver();
         report.flush();
+        log4j.info("Test DONE.");
     }
 
 }

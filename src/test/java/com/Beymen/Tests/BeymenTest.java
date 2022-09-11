@@ -13,42 +13,47 @@ public class BeymenTest extends BaseTest {
 
         BasePage basePage = new BasePage();
 
-        logger.info("www.beymen.com sitesi açılır.");
+        logInfo("www.beymen.com sitesi açılır.");
         basePage.openPage();
 
-        logger.info("Ana sayfanın açıldığı kontrol edilir.");
+        logInfo("Ana sayfanın açıldığı kontrol edilir.");
         basePage.checkPage();
 
-        logger.info("Arama kutucuğuna “şort” kelimesi girilir.");
+        logInfo("Arama kutucuğuna “şort” kelimesi girilir.");
         basePage.searchInInput(0, "şort");
 
-        logger.info("Arama kutucuğuna girilen “şort” kelimesi silinir.");
+        logInfo("Arama kutucuğuna girilen “şort” kelimesi silinir.");
         basePage.clearSearch();
 
-        logger.info("Arama kutucuğuna “gömlek” kelimesi girilir.");
+        logInfo("Arama kutucuğuna “gömlek” kelimesi girilir.");
         basePage.searchInInput(1, "gömlek");
 
-        logger.info("Klavye üzerinden “enter” tuşuna bastırılır.");
+        logInfo("Klavye üzerinden “enter” tuşuna bastırılır.");
         basePage.pressEnter();
 
-        logger.info("Sonuca göre sergilenen ürünlerden rastgele bir ürün seçilir.");
+        logInfo("Sonuca göre sergilenen ürünlerden rastgele bir ürün seçilir.");
         basePage.getRandomProduct();
 
-        logger.info("Seçilen ürünün ürün bilgisi ve tutar bilgisi txt dosyasına yazılır.");
+        logInfo("Seçilen ürünün ürün bilgisi ve tutar bilgisi txt dosyasına yazılır.");
         basePage.writeProductInformation();
 
-        logger.info("Seçilen ürün sepete eklenir.");
+        logInfo("Seçilen ürün sepete eklenir.");
         basePage.addToBasket();
 
-        logger.info("Ürün sayfasındaki fiyat ile sepette yer alan ürün fiyatının doğruluğu karşılaştırılır.");
+        logInfo("Ürün sayfasındaki fiyat ile sepette yer alan ürün fiyatının doğruluğu karşılaştırılır.");
         basePage.checkPriceInBasket();
 
-        logger.info("Adet arttırılarak ürün adedinin 2 olduğu doğrulanır.");
+        logInfo("Adet arttırılarak ürün adedinin 2 olduğu doğrulanır.");
         basePage.increaseQuantity("2");
 
-        logger.info("Ürün sepetten silinerek sepetin boş olduğu kontrol edilir.");
+        logInfo("Ürün sepetten silinerek sepetin boş olduğu kontrol edilir.");
         basePage.deleteFromBasket();
 
+    }
+
+    public void logInfo(String text) {
+        logger.info(text);
+        log4j.info(text);
     }
 
 }
