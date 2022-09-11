@@ -1,9 +1,6 @@
 package com.Beymen.Pages;
 
-import com.Beymen.Locators.CartLocators;
 import com.Beymen.Locators.HomeLocators;
-import com.Beymen.Locators.ProductDetailLocators;
-import com.Beymen.Locators.ProductListLocators;
 import com.Beymen.Tests.BaseTest;
 import com.Beymen.Utilities.DriverManager;
 import com.Beymen.Utilities.ElementHelper;
@@ -12,13 +9,9 @@ import com.aventstack.extentreports.ExtentTest;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Random;
 
 public class BasePage {
 

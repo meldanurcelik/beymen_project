@@ -1,7 +1,6 @@
 package com.Beymen.Pages;
 
 import com.Beymen.Locators.CartLocators;
-import com.Beymen.Locators.ProductDetailLocators;
 import com.Beymen.Tests.BaseTest;
 import com.Beymen.Utilities.ElementHelper;
 import com.aventstack.extentreports.ExtentTest;
