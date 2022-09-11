@@ -1,11 +1,9 @@
 package com.Beymen.Utilities;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,6 +11,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ElementHelper {
@@ -112,6 +112,16 @@ public class ElementHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getScreenShot(WebDriver driver) throws IOException {
+        String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+        TakesScreenshot ts = (TakesScreenshot) driver;
+        File source = ts.getScreenshotAs(OutputType.FILE);
+        String destination = System.getProperty("user.dir") + "/Screenshots/testResult-" + dateName + ".png";
+        File finalDestination = new File(destination);
+        FileUtils.copyFile(source, finalDestination);
+        return destination;
     }
 
 }

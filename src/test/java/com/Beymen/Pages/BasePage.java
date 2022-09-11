@@ -3,6 +3,9 @@ package com.Beymen.Pages;
 import com.Beymen.Tests.BaseTest;
 import com.Beymen.Utilities.DriverManager;
 import com.Beymen.Utilities.ElementHelper;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -21,12 +24,17 @@ public class BasePage {
     WebDriverWait wait;
     ElementHelper elementHelper;
 
-    String detailPrice;
+    ExtentReports report;
+    ExtentTest logger;
+
+    private String detailPrice;
+
 
     public BasePage() {
         this.driver = BaseTest.driver;
         this.wait = new WebDriverWait(driver, 10);
         this.elementHelper = new ElementHelper(driver);
+        this.logger = BaseTest.logger;
     }
 
     By onetrustAcceptBtn = By.xpath("//*[@id='onetrust-accept-btn-handler']");
@@ -64,99 +72,187 @@ public class BasePage {
     By emptyMessageBtn = By.xpath("//*[@class='m-empty__messageBtn']");
 
 
-    public void openPage() {
-        DriverManager.initializeDriver();
-
-        elementHelper.checkElementVisible(onetrustAcceptBtn);
-        elementHelper.checkElementClickable(onetrustAcceptBtn);
-        elementHelper.click(onetrustAcceptBtn);
+    public void openPage() throws IOException {
+        try {
+            DriverManager.initializeDriver();
+            elementHelper.checkElementVisible(onetrustAcceptBtn);
+            elementHelper.checkElementClickable(onetrustAcceptBtn);
+            elementHelper.click(onetrustAcceptBtn);
+            logger.log(Status.PASS, "Test Case PASSED");
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
+        }
     }
 
-    public void checkPage() {
-        elementHelper.checkElementVisible(headerLogo);
-        String actualTitle = elementHelper.getAttribute(headerLogo, "title");
-        String expectedTitle = "Beymen";
-        Assert.assertEquals(expectedTitle, actualTitle);
+    public void checkPage() throws IOException {
+        try {
+            elementHelper.checkElementVisible(headerLogo);
+            String actualTitle = elementHelper.getAttribute(headerLogo, "title");
+            String expectedTitle = "Beymen";
+            logger.log(Status.PASS, "Test Case PASSED");
+            Assert.assertEquals(expectedTitle, actualTitle);
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
+        }
     }
 
     public void searchInInput(int column, String expectedText) throws IOException {
-        elementHelper.sendKey(searchInput, elementHelper.readFromExcel(column));
-        String actualText = elementHelper.getAttribute(searchInput, "value");
-        Assert.assertEquals(expectedText, actualText);
+        try {
+            elementHelper.sendKey(searchInput, elementHelper.readFromExcel(column));
+            String actualText = elementHelper.getAttribute(searchInput, "value");
+            logger.log(Status.PASS, "Test Case PASSED");
+            Assert.assertEquals(expectedText, actualText);
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
+        }
     }
 
-    public void clearSearch() {
-        elementHelper.sendKey(searchInput, Keys.CONTROL + "A" + Keys.DELETE);
-        String actualText = elementHelper.getAttribute(searchInput, "value");
-        String expectedText = "";
-        Assert.assertEquals(expectedText, actualText);
+    public void clearSearch() throws IOException {
+        try {
+            elementHelper.sendKey(searchInput, Keys.CONTROL + "A" + Keys.DELETE);
+            String actualText = elementHelper.getAttribute(searchInput, "value");
+            String expectedText = "";
+            logger.log(Status.PASS, "Test Case PASSED");
+            Assert.assertEquals(expectedText, actualText);
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
+        }
     }
 
-    public void pressEnter() {
-        elementHelper.sendKey(searchInput, "" + Keys.ENTER);
+    public void pressEnter() throws IOException {
+        try {
+            elementHelper.sendKey(searchInput, "" + Keys.ENTER);
+            logger.log(Status.PASS, "Test Case PASSED");
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
+        }
     }
 
-    public void getRandomProduct() {
-        Random random = new Random();
-        int productSize = elementHelper.findElements(productList).size();
-        int count = random.nextInt(productSize);
-        WebElement product = elementHelper.findElements(productList).get(count);
-        elementHelper.scrollToElement(product);
-        product.click();
-        elementHelper.checkElementVisible(productDescription);
-    }
-
-    public void writeProductInformation() {
-        elementHelper.writeToTxt(productDescription, productColor, productPrice);
-    }
-
-    public void addToBasket() {
-        detailPrice = elementHelper.getText(productPrice);
-        int bodySizeCount = elementHelper.findElements(productSizes).size();
-        while (true) {
+    public void getRandomProduct() throws IOException {
+        try {
             Random random = new Random();
-            int count = random.nextInt(bodySizeCount);
-            WebElement selectedBody = elementHelper.findElements(productSizes).get(count);
-            if (!selectedBody.getAttribute("class").contains("-disabled")) {
-                selectedBody.click();
-                break;
-            }
+            int productSize = elementHelper.findElements(productList).size();
+            int count = random.nextInt(productSize);
+            WebElement product = elementHelper.findElements(productList).get(count);
+            elementHelper.scrollToElement(product);
+            product.click();
+            elementHelper.checkElementVisible(productDescription);
+            logger.log(Status.PASS, "Test Case PASSED");
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
         }
-        elementHelper.click(addBasketBtn);
-        elementHelper.checkElementVisible(addedToCartNotifTitle);
-        String actualText = elementHelper.getText(addedToCartNotifTitle);
-        String expectedText = "Sepete Eklendi";
-        Assert.assertEquals(expectedText, actualText);
+
     }
 
-    public void checkPriceInBasket() {
-        elementHelper.click(addedToCartNotifBtn);
-        elementHelper.checkElementVisible(orderSummaryTitle);
-        String salePrice = elementHelper.getText(productSalePrice);
-        Assert.assertEquals(detailPrice, salePrice);
-    }
-
-    public void increaseQuantity(String quantity) {
-        Select select = new Select(elementHelper.findElement(quantityDropdown));
-        List<WebElement> options = select.getOptions();
-        int optionSize = options.size();
-        for (int i = 0; i < optionSize; i++) {
-            if (options.get(i).getText().contains(quantity)) {
-                select.selectByValue(quantity);
-                break;
-            }
+    public void writeProductInformation() throws IOException {
+        try {
+            elementHelper.writeToTxt(productDescription, productColor, productPrice);
+            logger.log(Status.PASS, "Test Case PASSED");
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
         }
-        String actualQuantity = select.getFirstSelectedOption().getText();
-        Assert.assertEquals(quantity + " adet", actualQuantity);
     }
 
-    public void deleteFromBasket() {
-        elementHelper.click(removeCartItemBtn);
-        elementHelper.checkElementVisible(removeCartNotifTitlle);
-        elementHelper.checkElementVisible(emptyMessageBtn);
-        String actualTitle= elementHelper.getAttribute(emptyMessageBtn, "title");
-        String expectedTitle = "Alışverişe Devam Et";
-        Assert.assertEquals(expectedTitle, actualTitle);
+    public void addToBasket() throws IOException {
+        try {
+            detailPrice = elementHelper.getText(productPrice);
+            int bodySizeCount = elementHelper.findElements(productSizes).size();
+            while (true) {
+                Random random = new Random();
+                int count = random.nextInt(bodySizeCount);
+                WebElement selectedBody = elementHelper.findElements(productSizes).get(count);
+                if (!selectedBody.getAttribute("class").contains("-disabled")) {
+                    selectedBody.click();
+                    break;
+                }
+            }
+            elementHelper.click(addBasketBtn);
+            elementHelper.checkElementVisible(addedToCartNotifTitle);
+            String actualText = elementHelper.getText(addedToCartNotifTitle);
+            String expectedText = "Sepete Eklendi";
+            logger.log(Status.PASS, "Test Case PASSED");
+            Assert.assertEquals(expectedText, actualText);
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void checkPriceInBasket() throws IOException {
+        try {
+            elementHelper.click(addedToCartNotifBtn);
+            elementHelper.checkElementVisible(orderSummaryTitle);
+            String salePrice = elementHelper.getText(productSalePrice);
+            logger.log(Status.PASS, "Test Case PASSED");
+            Assert.assertEquals(detailPrice, salePrice);
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void increaseQuantity(String quantity) throws IOException {
+        try {
+            Select select = new Select(elementHelper.findElement(quantityDropdown));
+            List<WebElement> options = select.getOptions();
+            int optionSize = options.size();
+            for (int i = 0; i < optionSize; i++) {
+                if (options.get(i).getText().contains(quantity)) {
+                    select.selectByValue(quantity);
+                    break;
+                }
+            }
+            String actualQuantity = select.getFirstSelectedOption().getText();
+            logger.log(Status.PASS, "Test Case PASSED");
+            Assert.assertEquals(quantity + " adet", actualQuantity);
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteFromBasket() throws IOException {
+        try {
+            elementHelper.click(removeCartItemBtn);
+            elementHelper.checkElementVisible(removeCartNotifTitlle);
+            elementHelper.checkElementVisible(emptyMessageBtn);
+            String actualTitle = elementHelper.getAttribute(emptyMessageBtn, "title");
+            String expectedTitle = "Alışverişe Devam Et";
+            logger.log(Status.PASS, "Test Case PASSED");
+            Assert.assertEquals(expectedTitle, actualTitle);
+        } catch (Exception e) {
+            String screenshotPath = elementHelper.getScreenShot(driver);
+            logger.log(Status.FAIL, "Test Case FAILED");
+            logger.fail("Test Case Failed Snapshot is below " + logger.addScreenCaptureFromPath(screenshotPath));
+            throw new RuntimeException(e);
+        }
     }
 
 }
